@@ -13,8 +13,8 @@ android {
         applicationId = "com.shilpakala"
         minSdk = 28
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
     }
 
     buildTypes {
@@ -59,6 +59,9 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
+
+    // DataStore for session persistence
+    implementation(libs.datastore.preferences)
 
     debugImplementation(libs.androidx.ui.tooling)
 }

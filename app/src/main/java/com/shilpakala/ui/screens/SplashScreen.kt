@@ -14,13 +14,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.shilpakala.navigation.Screen
 import com.shilpakala.ui.theme.*
+import com.shilpakala.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
+fun SplashScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+
+    val isLoggedIn by authViewModel.isLoggedIn.collectAsStateWithLifecycle()
+    val isGuest by authViewModel.isGuest.collectAsStateWithLifecycle()
 
     // ── Animations ────────────────────────────────────────────────────────────
     var visible by remember { mutableStateOf(false) }
@@ -41,7 +46,13 @@ fun SplashScreen(navController: NavHostController) {
     LaunchedEffect(Unit) {
         visible = true
         delay(2800)
-        navController.navigate(Screen.Gallery.route) {
+        // Route based on session state
+        val destination = when {
+            isLoggedIn -> Screen.Gallery.route
+            isGuest -> Screen.Gallery.route
+            else -> Screen.Auth.route
+        }
+        navController.navigate(destination) {
             popUpTo(Screen.Splash.route) { inclusive = true }
         }
     }
@@ -54,7 +65,8 @@ fun SplashScreen(navController: NavHostController) {
                 Brush.verticalGradient(
                     listOf(IvoryWhite, BackgroundBeige, ContainerBeige)
                 )
-            ),
+            )
+            .statusBarsPadding(),
         contentAlignment = Alignment.Center
     ) {
         Column(

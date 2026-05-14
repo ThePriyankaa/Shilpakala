@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,11 +32,15 @@ import com.shilpakala.viewmodel.ArtworkViewModel
 @Composable
 fun HeritageScreen(viewModel: ArtworkViewModel) {
     val sections by viewModel.heritageSections.collectAsStateWithLifecycle()
+    val categories = listOf("Hoysala Art", "Stone Carving", "Wood Carving", "Bronze Sculptures", "Temple Architecture")
+    var selectedCategory by remember { mutableStateOf(categories.first()) }
+    val filteredSections = sections.filter { it.category == selectedCategory }
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(BackgroundBeige),
+            .background(BackgroundBeige)
+            .statusBarsPadding(),
         contentPadding = PaddingValues(bottom = 80.dp)
     ) {
         // ── Header banner ────────────────────────────────────────────────────
@@ -61,7 +66,7 @@ fun HeritageScreen(viewModel: ArtworkViewModel) {
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "— Hoysala Shilpi Tradition",
+                    text = "— Shilpi Tradition",
                     style = MaterialTheme.typography.labelMedium,
                     color = LuxuryGold
                 )
@@ -69,9 +74,44 @@ fun HeritageScreen(viewModel: ArtworkViewModel) {
                 GoldDivider()
             }
         }
+        
+        // ── Category Tabs ────────────────────────────────────────────────────
+        item {
+            ScrollableTabRow(
+                selectedTabIndex = categories.indexOf(selectedCategory),
+                containerColor = Color.Transparent,
+                contentColor = LuxuryGold,
+                edgePadding = 24.dp,
+                indicator = { tabPositions ->
+                    TabRowDefaults.SecondaryIndicator(
+                        Modifier.tabIndicatorOffset(tabPositions[categories.indexOf(selectedCategory)]),
+                        color = LuxuryGold
+                    )
+                },
+                divider = {
+                    HorizontalDivider(color = DividerColor)
+                }
+            ) {
+                categories.forEachIndexed { index, category ->
+                    Tab(
+                        selected = selectedCategory == category,
+                        onClick = { selectedCategory = category },
+                        text = {
+                            Text(
+                                text = category,
+                                style = MaterialTheme.typography.labelLarge,
+                                fontWeight = if (selectedCategory == category) FontWeight.Bold else FontWeight.Normal,
+                                color = if (selectedCategory == category) DarkBrown else TextSecondary
+                            )
+                        }
+                    )
+                }
+            }
+            Spacer(Modifier.height(16.dp))
+        }
 
         // ── Heritage sections ────────────────────────────────────────────────
-        items(sections, key = { it.id }) { section ->
+        items(filteredSections, key = { it.id }) { section ->
             HeritageSectionCard(section = section)
         }
 
@@ -120,7 +160,7 @@ private fun HeritageBanner() {
                 color = Color.White
             )
             Text(
-                text = "Hoysala Stone Carving Traditions",
+                text = "Exploring the Roots of Shilpa-Kala",
                 style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic),
                 color = LuxuryGold.copy(alpha = 0.9f)
             )
@@ -165,6 +205,17 @@ private fun HeritageSectionCard(section: HeritageSection) {
                 style = MaterialTheme.typography.headlineMedium,
                 color = DarkBrown
             )
+        }
+
+        Spacer(Modifier.height(8.dp))
+        
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Box(Modifier.background(ContainerGold, RoundedCornerShape(4.dp)).padding(horizontal = 8.dp, vertical = 4.dp)) {
+                Text(section.region, style = MaterialTheme.typography.labelSmall, color = LuxuryGoldDark)
+            }
+            Box(Modifier.background(ContainerGold, RoundedCornerShape(4.dp)).padding(horizontal = 8.dp, vertical = 4.dp)) {
+                Text(section.historicalPeriod, style = MaterialTheme.typography.labelSmall, color = LuxuryGoldDark)
+            }
         }
 
         Spacer(Modifier.height(12.dp))

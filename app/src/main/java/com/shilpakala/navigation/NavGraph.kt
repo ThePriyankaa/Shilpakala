@@ -3,17 +3,23 @@ package com.shilpakala.navigation
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.shilpakala.ui.screens.*
 import com.shilpakala.viewmodel.ArtworkViewModel
+import com.shilpakala.viewmodel.AuthViewModel
 
 @Composable
 fun ShilpaKalaNavGraph(
     navController: NavHostController,
-    viewModel: ArtworkViewModel
+    viewModel: ArtworkViewModel,
+    authViewModel: AuthViewModel
 ) {
+    val userId by authViewModel.currentUserId.collectAsStateWithLifecycle()
+
     NavHost(
         navController = navController,
         startDestination = Screen.Splash.route,
@@ -31,29 +37,67 @@ fun ShilpaKalaNavGraph(
         }
     ) {
         composable(Screen.Splash.route) {
-            SplashScreen(navController)
+            SplashScreen(navController, authViewModel)
+        }
+
+        composable(Screen.Auth.route) {
+            AuthScreen(navController, authViewModel)
+        }
+
+        composable(Screen.Login.route) {
+            LoginScreen(navController, authViewModel)
+        }
+
+        composable(Screen.Register.route) {
+            RegisterScreen(navController, authViewModel)
         }
 
         composable(Screen.Gallery.route) {
-            GalleryScreen(navController, viewModel)
+            GalleryScreen(navController, viewModel, authViewModel)
         }
 
         composable(Screen.Detail.route) { backStackEntry ->
             val artworkId = backStackEntry.arguments?.getString("artworkId") ?: return@composable
-            ArtworkDetailScreen(artworkId, navController, viewModel)
-        }
-
-        composable(Screen.Timeline.route) { backStackEntry ->
-            val artworkId = backStackEntry.arguments?.getString("artworkId") ?: "global"
-            TimelineScreen(artworkId, navController, viewModel)
-        }
-
-        composable("timeline/global") {
-            TimelineScreen("global", navController, viewModel)
+            ArtworkDetailScreen(artworkId, navController, viewModel, authViewModel)
         }
 
         composable(Screen.Heritage.route) {
             HeritageScreen(viewModel)
+        }
+
+        composable(Screen.FullScreenImage.route) { backStackEntry ->
+            val artworkId = backStackEntry.arguments?.getString("artworkId") ?: return@composable
+            FullScreenImageScreen(artworkId, navController, viewModel)
+        }
+
+        composable(Screen.Saved.route) {
+            SavedArtworksScreen(navController, viewModel, userId)
+        }
+
+        composable(Screen.Profile.route) {
+            ProfileScreen(navController, authViewModel)
+        }
+
+        composable(Screen.ArtistDashboard.route) {
+            ArtistDashboardScreen(navController, viewModel, authViewModel)
+        }
+
+        composable(Screen.UploadArtwork.route) {
+            UploadArtworkScreen(navController, viewModel, authViewModel)
+        }
+
+        composable(Screen.EditArtwork.route) { backStackEntry ->
+            val artworkId = backStackEntry.arguments?.getString("artworkId") ?: return@composable
+            EditArtworkScreen(artworkId, navController, viewModel)
+        }
+
+        composable(Screen.ManageTimeline.route) { backStackEntry ->
+            val artworkId = backStackEntry.arguments?.getString("artworkId") ?: return@composable
+            ManageTimelineScreen(artworkId, navController, viewModel)
+        }
+
+        composable(Screen.Notifications.route) {
+            NotificationsScreen(navController, viewModel, userId)
         }
     }
 }

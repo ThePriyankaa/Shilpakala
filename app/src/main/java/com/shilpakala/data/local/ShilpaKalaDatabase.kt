@@ -4,14 +4,34 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.shilpakala.data.model.Artwork
-import com.shilpakala.data.model.TimelineStage
+import androidx.room.TypeConverters
+import com.shilpakala.data.model.*
 
-@Database(entities = [Artwork::class, TimelineStage::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        Artwork::class,
+        TimelineStage::class,
+        User::class,
+        LikedArtwork::class,
+        SavedArtwork::class,
+        Inquiry::class,
+        UserActivity::class,
+        AppNotification::class
+    ],
+    version = 2,
+    exportSchema = false
+)
+@TypeConverters(Converters::class)
 abstract class ShilpaKalaDatabase : RoomDatabase() {
 
     abstract fun artworkDao(): ArtworkDao
     abstract fun timelineDao(): TimelineDao
+    abstract fun userDao(): UserDao
+    abstract fun likedArtworkDao(): LikedArtworkDao
+    abstract fun savedArtworkDao(): SavedArtworkDao
+    abstract fun inquiryDao(): InquiryDao
+    abstract fun userActivityDao(): UserActivityDao
+    abstract fun notificationDao(): NotificationDao
 
     companion object {
         @Volatile
@@ -23,7 +43,9 @@ abstract class ShilpaKalaDatabase : RoomDatabase() {
                     context.applicationContext,
                     ShilpaKalaDatabase::class.java,
                     "shilpakala_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 INSTANCE = instance
                 instance
             }

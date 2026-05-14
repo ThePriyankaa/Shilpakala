@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 /**
- * Single source of truth. Backed by Room DB.
+ * Single source of truth for artworks. Backed by Room DB.
  */
 class ArtworkRepository(
     private val artworkDao: ArtworkDao,
@@ -39,11 +39,30 @@ class ArtworkRepository(
 
     val heritageSections: List<HeritageSection> = MockData.heritageSections
 
+    fun getArtworksByArtist(userId: Int): Flow<List<Artwork>> =
+        artworkDao.getArtworksByArtist(userId)
+
+    suspend fun insertArtwork(artwork: Artwork) = artworkDao.insert(artwork)
+
+    suspend fun updateArtwork(artwork: Artwork) = artworkDao.update(artwork)
+
+    suspend fun deleteArtwork(id: String) = artworkDao.deleteById(id)
+
+    suspend fun insertTimelineStages(stages: List<TimelineStage>) = timelineDao.insertAll(stages)
+
+    suspend fun updateTimelineStages(artworkId: String, stages: List<TimelineStage>) {
+        timelineDao.deleteByArtworkId(artworkId)
+        val stagesToInsert = stages.map { it.copy(id = 0, artworkId = artworkId) }
+        timelineDao.insertAll(stagesToInsert)
+    }
+
+    suspend fun deleteTimelineStages(artworkId: String) = timelineDao.deleteByArtworkId(artworkId)
+
     suspend fun populateDatabaseIfNeeded() {
         if (artworkDao.getCount() == 0) {
             val allArtworks = MockData.artworks
             val allTimelines = MockData.artworks.flatMap { it.timelineStages }
-            
+
             artworkDao.insertAll(allArtworks)
             timelineDao.insertAll(allTimelines)
         }

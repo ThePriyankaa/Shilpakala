@@ -8,11 +8,8 @@ import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AutoStories
-import androidx.compose.material.icons.filled.GridView
-import androidx.compose.material.icons.filled.Timeline
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -23,14 +20,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.shilpakala.data.model.UserRole
 import com.shilpakala.navigation.Screen
 import com.shilpakala.navigation.ShilpaKalaNavGraph
 import com.shilpakala.ui.theme.*
 import com.shilpakala.viewmodel.ArtworkViewModel
+import com.shilpakala.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +48,29 @@ class MainActivity : ComponentActivity() {
 fun ShilpaKalaApp() {
     val navController = rememberNavController()
     val artworkViewModel: ArtworkViewModel = viewModel()
+    val authViewModel: AuthViewModel = viewModel()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val userRole by authViewModel.currentUserRole.collectAsStateWithLifecycle()
+    val isGuest by authViewModel.isGuest.collectAsStateWithLifecycle()
 
-    // Bottom nav visible only on main screens (not splash or detail)
+    // Bottom nav visible only on main screens
     val showBottomNav = currentRoute in listOf(
         Screen.Gallery.route,
         Screen.Heritage.route,
-        "timeline/global"
+        Screen.Saved.route
     )
+
+    // Build bottom nav items dynamically based on role
+    val bottomNavItems = remember(userRole, isGuest) {
+        buildList {
+            add(BottomNavItemData("Gallery", Icons.Default.GridView, Screen.Gallery.route))
+            if (!isGuest && userRole == UserRole.BUYER) {
+                add(BottomNavItemData("Saved", Icons.Default.Bookmark, Screen.Saved.route))
+            }
+            add(BottomNavItemData("Heritage", Icons.Default.AutoStories, Screen.Heritage.route))
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -69,36 +83,33 @@ fun ShilpaKalaApp() {
             ) {
                 ShilpaKalaBottomBar(
                     navController = navController,
-                    currentRoute = currentRoute
+                    currentRoute = currentRoute,
+                    items = bottomNavItems
                 )
             }
         }
     ) { innerPadding ->
         ShilpaKalaNavGraph(
             navController = navController,
-            viewModel = artworkViewModel
+            viewModel = artworkViewModel,
+            authViewModel = authViewModel
         )
     }
 }
 
-// ── Bottom Navigation Bar ─────────────────────────────────────────────────────
+// ── Bottom Navigation ─────────────────────────────────────────────────────────
 
-private data class BottomNavItem(
+private data class BottomNavItemData(
     val label: String,
     val icon: ImageVector,
     val route: String
 )
 
-private val bottomNavItems = listOf(
-    BottomNavItem("Gallery",  Icons.Default.GridView,     Screen.Gallery.route),
-    BottomNavItem("Timeline", Icons.Default.Timeline,     "timeline/global"),
-    BottomNavItem("Heritage", Icons.Default.AutoStories,  Screen.Heritage.route)
-)
-
 @Composable
 private fun ShilpaKalaBottomBar(
     navController: NavHostController,
-    currentRoute: String?
+    currentRoute: String?,
+    items: List<BottomNavItemData>
 ) {
     Box(
         modifier = Modifier
@@ -130,7 +141,7 @@ private fun ShilpaKalaBottomBar(
             tonalElevation = 0.dp,
             modifier = Modifier.navigationBarsPadding()
         ) {
-            bottomNavItems.forEach { item ->
+            items.forEach { item ->
                 val selected = currentRoute == item.route
 
                 NavigationBarItem(
