@@ -2,6 +2,11 @@ package com.shilpakala.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +45,7 @@ fun HeritageScreen(viewModel: ArtworkViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .background(BackgroundBeige)
-            .statusBarsPadding(),
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top)),
         contentPadding = PaddingValues(bottom = 80.dp)
     ) {
         // ── Header banner ────────────────────────────────────────────────────
