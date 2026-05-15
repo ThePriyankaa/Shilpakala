@@ -130,7 +130,7 @@ private fun GalleryTopBar(
     Column(
         modifier = Modifier.fillMaxWidth()
             .background(Brush.verticalGradient(listOf(IvoryWhite, BackgroundBeige)))
-            .statusBarsPadding()
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top))
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp),

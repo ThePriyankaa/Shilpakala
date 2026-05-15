@@ -66,7 +66,7 @@ fun SplashScreen(navController: NavHostController, authViewModel: AuthViewModel)
                     listOf(IvoryWhite, BackgroundBeige, ContainerBeige)
                 )
             )
-            .statusBarsPadding(),
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)),
         contentAlignment = Alignment.Center
     ) {
         Column(

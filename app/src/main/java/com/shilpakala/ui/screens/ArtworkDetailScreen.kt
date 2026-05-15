@@ -211,7 +211,7 @@ fun ArtworkDetailScreen(
 
             // ── Top navigation bar (floating) ─────────────────────────────────
             Row(
-                modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 16.dp, vertical = 8.dp),
+                modifier = Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)).padding(horizontal = 16.dp, vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 FloatingNavButton(onClick = { navController.popBackStack() }, icon = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")

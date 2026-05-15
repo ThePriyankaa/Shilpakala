@@ -10,38 +10,38 @@ object MockData {
     
     // Hoysala references
     private val hoysalaImages = listOf(
-        "https://images.unsplash.com/photo-1599573887071-70eebbb263e6?w=800&q=80", // Intricate temple carving
-        "https://images.unsplash.com/photo-1621217637841-f6280db45214?w=800&q=80", // Belur/Halebidu style carving
-        "https://images.unsplash.com/photo-1517424699507-6bd2f01f0a20?w=800&q=80", // Detailed stone relief
-        "https://images.unsplash.com/photo-1565507425145-c8e42f9a7102?w=800&q=80", // Temple arch
-        "https://images.unsplash.com/photo-1588614959060-4d144f28b207?w=800&q=80"  // Ancient Indian sculpture
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Darpana_Sundari_(Lady_with_mirror),_Belur.jpg?width=800", // Salabhanjika
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Chennakesava_temple_at_Belur.jpg?width=800", // Belur/Halebidu
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Friezes_at_Hoysaleswara_Temple.jpg?width=800", // Frieze
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Makara_Torana_above_the_doorway_of_Hoysaleshwara_temple.jpg?width=800", // Arch
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Hoysala_emblem_at_Belur.jpg?width=800"  // Sala emblem
     )
     
     // Stone Sculpture references
     private val stoneImages = listOf(
-        "https://images.unsplash.com/photo-1625834317364-b32c140fd360?w=800&q=80", // Ganesha stone sculpture
-        "https://images.unsplash.com/photo-1561665245-e6f43f07a0c1?w=800&q=80", // Nandi bull stone
-        "https://images.unsplash.com/photo-1606357457782-b7e1c8413b0c?w=800&q=80", // Stone relief
-        "https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?w=800&q=80", // Stone carving artisan work
-        "https://images.unsplash.com/photo-1582201943021-e8e5b66d860e?w=800&q=80"  // Sandstone deity
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Shiva_Nataraja_-_Elephanta.jpg?width=800", // Stone Nataraja
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Ganesha_at_Halebidu.jpg?width=800", // Ganesha
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nandi_at_Chamundi_Hills.jpg?width=800", // Nandi
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Gajalakshmi_at_Ellora.jpg?width=800", // Gajalakshmi
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Apsara_Khajuraho.jpg?width=800"  // Apsara
     )
     
     // Wood Carving references
     private val woodImages = listOf(
-        "https://images.unsplash.com/photo-1598887141926-29e00d5dc48a?w=800&q=80", // Intricate wood carving
-        "https://images.unsplash.com/photo-1606103859663-718225529d47?w=800&q=80", // Wooden panel
-        "https://images.unsplash.com/photo-1622396347854-4fb95c2e5572?w=800&q=80", // Wood sculpture 
+        "https://images.unsplash.com/photo-1598887141926-29e00d5dc48a?w=800&q=80", // Keep known good wood carving
+        "https://images.unsplash.com/photo-1606103859663-718225529d47?w=800&q=80", 
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Wood_carving_at_Kochi.jpg?width=800", // Wood sculpture 
         "https://images.unsplash.com/photo-1610444585324-5e921d7821ee?w=800&q=80", // Sandalwood style
         "https://images.unsplash.com/photo-1629230559648-520ec0cf7f5b?w=800&q=80"  // Elephant wood carving
     )
 
     // Bronze Art references
     private val bronzeImages = listOf(
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80", // Bronze Nataraja
-        "https://images.unsplash.com/photo-1620864388487-7095c10651ec?w=800&q=80", // Bronze deity
-        "https://images.unsplash.com/photo-1622616238356-912f27574a44?w=800&q=80", // Chola bronze style
-        "https://images.unsplash.com/photo-1604907978257-285b4b1a41db?w=800&q=80", // Panchaloha
-        "https://images.unsplash.com/photo-1626011400276-8091807353f8?w=800&q=80"  // Bronze cast
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Nataraja_Chola.jpg?width=800", // Bronze Nataraja
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Bronze_Venkateshwara.jpg?width=800", // Bronze deity
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Durga_Mahishasuramardini_bronze.jpg?width=800", // Chola bronze style
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Ardhanarishvara_bronze.jpg?width=800", // Panchaloha
+        "https://commons.wikimedia.org/wiki/Special:FilePath/Garuda_bronze.jpg?width=800"  // Bronze cast
     )
 
     val artworks: List<Artwork> = listOf(
